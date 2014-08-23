@@ -1,4 +1,4 @@
 CmdPres
 =======
 
-Python curses based app for presentations into command line terminal
+Python curses based app for command line terminal presentations
