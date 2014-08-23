@@ -1,0 +1,7 @@
+<presentation>
+    <slide>
+        <TextComponent positionX="10"
+                       positionY="0"
+        >Presentation Title</TextComponent>
+    </slide>
+</presentation>
