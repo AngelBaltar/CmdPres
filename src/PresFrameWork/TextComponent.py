@@ -16,11 +16,6 @@
 # --  * License along with this program.  If not, see
 # --  * <http://www.gnu.org/licenses/>.
 
-__author__="${user}"
-__date__ ="$${date} ${time}$"
-
-if __name__ == "__main__":
-    print "Hello World"
 
 from PresFrameWork.SlideComponent import *;
 

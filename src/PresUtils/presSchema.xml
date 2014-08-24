@@ -1,35 +1,28 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     
- <xs:group name="componentTypes">
-    <xs:choice>
-        <xs:element name="TextComponent">
-             <xs:complexType>
-                <xs:simpleContent>
-                    <xs:extension base="xs:string">
-                         <xs:attribute name="positionX" type="xs:integer" />
-                         <xs:attribute name="positionY" type="xs:integer" />
-                    </xs:extension>
-                </xs:simpleContent>
-             </xs:complexType>
-        </xs:element>
-    </xs:choice>
-</xs:group>    
-    
-<xs:group name="presslides">
-         <xs:sequence>
-            <xs:element name="slide">
-                <xs:complexType>
-                    <xs:group ref="componentTypes"/>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-</xs:group>
-    
-    
 <xs:element name="presentation">
   <xs:complexType>
-      <xs:group ref="presslides"/>
+      <xs:sequence maxOccurs="1000">
+            <xs:element name="slide">
+                <xs:complexType>
+                   <xs:sequence maxOccurs="1000">
+	                   <xs:choice>
+					        <xs:element name="TextComponent">
+					             <xs:complexType>
+					                <xs:simpleContent>
+					                    <xs:extension base="xs:string">
+					                         <xs:attribute name="positionX" type="xs:integer" />
+					                         <xs:attribute name="positionY" type="xs:integer" />
+					                    </xs:extension>
+					                </xs:simpleContent>
+					             </xs:complexType>
+					        </xs:element>
+					    </xs:choice>
+				    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+       </xs:sequence>
   </xs:complexType>
 </xs:element>
 </xs:schema>

@@ -16,13 +16,13 @@
 # --  * License along with this program.  If not, see
 # --  * <http://www.gnu.org/licenses/>.
 
-__author__="${user}"
-__date__ ="$${date} ${time}$"
-
-if __name__ == "__main__":
-    print "Hello World"
+from PresUtils import Screen
 
 class Slide:
+    
+    NEXT_SLIDE=1
+    PREV_SLIDE=-1
+    QUIT_PRES=2
     
     #constructor for the class
     def __init__(self):
@@ -35,7 +35,13 @@ class Slide:
     
     #updates the slide reading from devices
     def update(self):
-        pass;
+        c=Screen.readKey()
+        if c==ord('q'):
+            return Slide.QUIT_PRES;
+        if c==ord('d'):
+            return Slide.NEXT_SLIDE;
+        if c==ord('a'):
+            return Slide.PREV_SLIDE; 
     
     #adds a component for the slide
     def append(self,component):

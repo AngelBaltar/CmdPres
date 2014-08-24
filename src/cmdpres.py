@@ -16,21 +16,20 @@
 # --  * License along with this program.  If not, see
 # --  * <http://www.gnu.org/licenses/>.
 
-__author__="${user}"
-__date__ ="$${date} ${time}$"
-
-if __name__ == "__main__":
-    print "Hello World"
 
 from PresFrameWork.Presentation import *;
-from PresUtils.Screen import *;
+from PresUtils import Screen;
 
 __author__="angel"
 __date__ ="$22-ago-2014 12:39:52$"
 
 if __name__ == "__main__":
-    openScreen()
-    pres=Presentation();
-    pres.load("./test/pres1.xml");
-    pres.open();
-    closeScreen()
+    #try:
+        Screen.openScreen();
+        pres=Presentation();
+        pres.load("./test/pres1.xml");
+        pres.open();
+    #except:
+    #    print "An exception was thrown"
+    #finally:
+        Screen.closeScreen()

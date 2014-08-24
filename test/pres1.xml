@@ -4,4 +4,14 @@
                        positionY="0"
         >Presentation Title</TextComponent>
     </slide>
+    <slide>
+        <TextComponent positionX="10"
+                       positionY="0"
+        >Presentation Title1</TextComponent>
+    </slide>
+    <slide>
+        <TextComponent positionX="10"
+                       positionY="0"
+        >Presentation Title2</TextComponent>
+    </slide>
 </presentation>

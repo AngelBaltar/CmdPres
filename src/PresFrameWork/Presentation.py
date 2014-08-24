@@ -16,16 +16,13 @@
 # --  * License along with this program.  If not, see
 # --  * <http://www.gnu.org/licenses/>.
 
-__author__="${user}"
-__date__ ="$${date} ${time}$"
-
-if __name__ == "__main__":
-    print "Hello World"
 
 from lxml import etree
-from PresFrameWork.Slide import *
-from PresFrameWork.SlideComponent import *
-from PresFrameWork.TextComponent import *
+import os
+
+from PresFrameWork.Slide import * 
+from PresFrameWork.TextComponent import * 
+from PresUtils import Screen;
 
 class Presentation:
     
@@ -35,7 +32,9 @@ class Presentation:
     
     #loads the presentation in the passed path
     def load(self,path):
-        xmlschema_doc = etree.parse("./src/PresUtils/presSchema.xml");
+        schema_path=os.path.dirname(os.path.abspath(__file__))
+        schema_path+="/../PresUtils/presSchema.xml";
+        xmlschema_doc = etree.parse(schema_path);
         xmlschema = etree.XMLSchema(xmlschema_doc);
 
         doc = etree.parse(path)
@@ -58,8 +57,16 @@ class Presentation:
                 
         
     def open(self):
-        for s in self._slides:
-            s.show()
+        sl=0;
+        while True:
+            self._slides[sl].show()
+            c=self._slides[sl].update()
+            if c==Slide.QUIT_PRES:
+                break;
+            if c==Slide.NEXT_SLIDE or c==Slide.PREV_SLIDE:
+                sl=sl+c;
+                Screen.clearScreen()
+            sl=sl%len(self._slides)
         
     def append(self,slide):
         self._slides.append(slide)

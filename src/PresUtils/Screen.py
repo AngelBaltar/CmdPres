@@ -16,12 +16,6 @@
 # --  * License along with this program.  If not, see
 # --  * <http://www.gnu.org/licenses/>.
 
-__author__="${user}"
-__date__ ="$${date} ${time}$"
-
-if __name__ == "__main__":
-    print "Hello World"
-
 __author__="angel"
 __date__ ="$23-ago-2014 12:10:52$"
 
@@ -34,26 +28,28 @@ def openScreen():
     locale.setlocale(locale.LC_ALL, '')
     code = locale.getpreferredencoding()
     curses.noecho()
-    curses.cbreak()
+    curses.cbreak() 
     curses.curs_set(0)
     
 def closeScreen():
-    while 1:
-        c = screen.getch()
-        if c == ord('q'):
-            break  # Exit the while()
-        screen.refresh()
     curses.endwin()
+    
+def updateScreen():
+    screen.refresh()
 
 #sets the cursor in the position you pass
 def setCursorPosition(x,y):
     screen.addstr(y, x,"")
-    screen.refresh()
+    updateScreen();
 
 #clears the screen
 def clearScreen():
     i=0;
-    while(i<20):
+    while(i<60):
         print "\n";
-        ++i;
+        i=i+1;
+    setCursorPosition(0,0)
+        
+def readKey():
+    return screen.getch()
     
