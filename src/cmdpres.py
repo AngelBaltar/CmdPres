@@ -18,18 +18,20 @@
 
 
 from PresFrameWork.Presentation import *;
-from PresUtils import Screen;
+from PresUtils.Screen import *;
 
 __author__="angel"
 __date__ ="$22-ago-2014 12:39:52$"
 
 if __name__ == "__main__":
     #try:
-        Screen.openScreen();
+        Screen.Instance().openScreen();
         pres=Presentation();
         pres.load("./test/pres1.xml");
+        Screen.Instance().screenPrint("hello")
         pres.open();
     #except:
+    #    Screen.Instance().screenPrint("An exception was thrown")
     #    print "An exception was thrown"
     #finally:
-        Screen.closeScreen()
+        Screen.Instance().closeScreen()

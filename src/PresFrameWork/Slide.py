@@ -16,7 +16,8 @@
 # --  * License along with this program.  If not, see
 # --  * <http://www.gnu.org/licenses/>.
 
-from PresUtils import Screen
+from PresUtils.Screen import *
+import curses
 
 class Slide:
     
@@ -30,17 +31,18 @@ class Slide:
         
     #shows the slide
     def show(self):
+        Screen.Instance().clearScreen()
         for c in self._components:
             c.show();
     
     #updates the slide reading from devices
     def update(self):
-        c=Screen.readKey()
+        c=Screen.Instance().readKey()
         if c==ord('q'):
             return Slide.QUIT_PRES;
-        if c==ord('d'):
+        if c==curses.KEY_RIGHT:
             return Slide.NEXT_SLIDE;
-        if c==ord('a'):
+        if c==curses.KEY_LEFT:
             return Slide.PREV_SLIDE; 
     
     #adds a component for the slide

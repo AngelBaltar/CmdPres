@@ -22,7 +22,7 @@ import os
 
 from PresFrameWork.Slide import * 
 from PresFrameWork.TextComponent import * 
-from PresUtils import Screen;
+from PresUtils.Screen import *;
 
 class Presentation:
     
@@ -39,7 +39,7 @@ class Presentation:
 
         doc = etree.parse(path)
         if not xmlschema.validate(doc):
-            print "you are trying to load an invalid document";
+            Screen.Instance().screenPrint("you are trying to load an invalid document")
             return;
         
         #here everything is ok
@@ -65,7 +65,7 @@ class Presentation:
                 break;
             if c==Slide.NEXT_SLIDE or c==Slide.PREV_SLIDE:
                 sl=sl+c;
-                Screen.clearScreen()
+                
             sl=sl%len(self._slides)
         
     def append(self,slide):

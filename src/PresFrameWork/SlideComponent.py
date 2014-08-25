@@ -17,7 +17,7 @@
 # --  * <http://www.gnu.org/licenses/>.
 
 
-from PresUtils.utils import *
+from PresUtils.Screen import *
 
 class SlideComponent:
     
@@ -32,4 +32,4 @@ class SlideComponent:
         self._positionY=y;
         
     def show(self):
-        setCursorPosition(self._positionX,self._positionY);
+        Screen.Instance().setCursorPosition(self._positionX,self._positionY);

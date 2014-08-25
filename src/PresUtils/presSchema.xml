@@ -3,10 +3,10 @@
     
 <xs:element name="presentation">
   <xs:complexType>
-      <xs:sequence maxOccurs="1000">
+      <xs:sequence maxOccurs="1000" minOccurs="1">
             <xs:element name="slide">
                 <xs:complexType>
-                   <xs:sequence maxOccurs="1000">
+                   <xs:sequence maxOccurs="1000" maxOccurs="1">
 	                   <xs:choice>
 					        <xs:element name="TextComponent">
 					             <xs:complexType>

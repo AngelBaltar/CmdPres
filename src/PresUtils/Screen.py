@@ -21,35 +21,51 @@ __date__ ="$23-ago-2014 12:10:52$"
 
 import curses
 import locale
+from PresUtils.Utils import *
 
-screen=curses.initscr();
-
-def openScreen():
-    locale.setlocale(locale.LC_ALL, '')
-    code = locale.getpreferredencoding()
-    curses.noecho()
-    curses.cbreak() 
-    curses.curs_set(0)
+@Singleton
+class Screen:
     
-def closeScreen():
-    curses.endwin()
+    def __init__(self):
+        self._begin_x =0; 
+        self._begin_y = 0
+        self._height = 40; 
+        self._width = 40;
+        self._screen=curses.initscr();
+        self._xpos=0;
+        self._ypos=0;
     
-def updateScreen():
-    screen.refresh()
-
-#sets the cursor in the position you pass
-def setCursorPosition(x,y):
-    screen.addstr(y, x,"")
-    updateScreen();
-
-#clears the screen
-def clearScreen():
-    i=0;
-    while(i<60):
-        print "\n";
-        i=i+1;
-    setCursorPosition(0,0)
+    def openScreen(self):
+        locale.setlocale(locale.LC_ALL, '')
+        code = locale.getpreferredencoding()
+        curses.noecho()
+        curses.cbreak() 
+        curses.curs_set(0)
+        self._screen.keypad(1)
+        win = curses.newwin(self._height, self._width, self._begin_y, self._begin_x);
         
-def readKey():
-    return screen.getch()
+    def closeScreen(self):
+        curses.endwin()
+        
+    def updateScreen(self):
+        self._screen.refresh()
+    
+    #sets the cursor in the position you pass
+    def setCursorPosition(self,x,y):
+        self._xpos=x
+        self._ypos=y
+        
+    def screenPrint(self,msg):
+        self._screen.addstr(self._ypos, self._xpos,msg)
+        self.updateScreen();
+    
+    #clears the screen
+    def clearScreen(self):
+        i=0;
+        for x in range(self._begin_x,self._width):
+            for y in range(self._begin_y,self._height):
+                self._screen.addstr(y,x,"\n");
+            
+    def readKey(self):
+        return self._screen.getch()
     

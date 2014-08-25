@@ -18,6 +18,7 @@
 
 
 from PresFrameWork.SlideComponent import *;
+from PresUtils.Screen import *;
 
 class TextComponent(SlideComponent):
     #constructor for the class
@@ -33,4 +34,4 @@ class TextComponent(SlideComponent):
     #shows the text component
     def show(self):
         SlideComponent.show(self)
-        print self._text;
+        Screen.Instance().screenPrint(self._text)
