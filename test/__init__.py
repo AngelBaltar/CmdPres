@@ -1,5 +1,5 @@
 #CmdPres Presentations for command line
-# --  * <cmdpres.py>
+# --  * <__init__.py>
 # --  * Copyright (C) Angel Baltar Diaz
 # --  *
 # --  * This program is free software: you can redistribute it and/or
@@ -16,22 +16,8 @@
 # --  * License along with this program.  If not, see
 # --  * <http://www.gnu.org/licenses/>.
 
-
-from PresFrameWork.Presentation import *;
-from PresUtils.Screen import *;
-
 __author__="angel"
-__date__ ="$22-ago-2014 12:39:52$"
+__date__ ="$23-ago-2014 12:10:21$"
 
-if __name__ == "__main__":
-    try:
-        Screen.Instance().openScreen();
-        pres=Presentation();
-        if not pres.load("./test/pres_ok1.xml"):
-            print "cant load the presentation"
-        else:
-            pres.open();
-    except:
-        Screen.Instance().screenPrint("An exception was thrown")
-    finally:
-        Screen.Instance().closeScreen()
+import sys
+sys.path.append("../")

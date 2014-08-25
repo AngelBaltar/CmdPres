@@ -39,8 +39,7 @@ class Presentation:
 
         doc = etree.parse(path)
         if not xmlschema.validate(doc):
-            Screen.Instance().screenPrint("you are trying to load an invalid document")
-            return;
+            return False;
         
         #here everything is ok
         xml_present=doc.getroot();
@@ -54,6 +53,7 @@ class Presentation:
                 if not (component is None):
                     slide.append(component);
             self.append(slide)
+        return True
                 
         
     def open(self):
