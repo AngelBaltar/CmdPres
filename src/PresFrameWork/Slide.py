@@ -16,8 +16,10 @@
 # --  * License along with this program.  If not, see
 # --  * <http://www.gnu.org/licenses/>.
 
-from PresUtils.Screen import *
 import curses
+
+from PresUtils.Screen import *
+
 
 class Slide:
     

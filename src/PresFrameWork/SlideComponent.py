@@ -19,6 +19,7 @@
 
 from PresUtils.Screen import *
 
+
 class SlideComponent:
     
     #constructor for the class

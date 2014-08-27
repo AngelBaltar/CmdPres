@@ -15,7 +15,8 @@
 # --  * You should have received a copy of the GNU General Public
 # --  * License along with this program.  If not, see
 # --  * <http://www.gnu.org/licenses/>.
-
+import sys
+import traceback    
 
 from PresFrameWork.Presentation import *;
 from PresUtils.Screen import *;
@@ -24,14 +25,21 @@ __author__="angel"
 __date__ ="$22-ago-2014 12:39:52$"
 
 if __name__ == "__main__":
-    try:
-        Screen.Instance().openScreen();
-        pres=Presentation();
-        if not pres.load("./test/pres_ok1.xml"):
-            print "cant load the presentation"
-        else:
-            pres.open();
-    except:
-        Screen.Instance().screenPrint("An exception was thrown")
-    finally:
-        Screen.Instance().closeScreen()
+    if len(sys.argv)!=2:
+        print "wrong parameters"
+    else:
+        pres_path=sys.argv[1]
+        try:
+            Screen.Instance().openScreen();
+            pres=Presentation();
+            if not pres.load(pres_path):
+                Screen.Instance().screenPrint("Cant load the presentation ")
+            else:
+                pres.open();
+            Screen.Instance().closeScreen()
+        except Exception as ex:
+                Screen.Instance().closeScreen()
+                traceback.print_exc()
+                print str(ex)
+        finally:
+            pass

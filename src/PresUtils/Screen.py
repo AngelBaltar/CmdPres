@@ -21,7 +21,9 @@ __date__ ="$23-ago-2014 12:10:52$"
 
 import curses
 import locale
+
 from PresUtils.Utils import *
+
 
 @Singleton
 class Screen:
@@ -38,6 +40,7 @@ class Screen:
     def openScreen(self):
         locale.setlocale(locale.LC_ALL, '')
         code = locale.getpreferredencoding()
+        curses.start_color()
         curses.noecho()
         curses.cbreak() 
         curses.curs_set(0)
@@ -55,13 +58,15 @@ class Screen:
         self._xpos=x
         self._ypos=y
         
-    def screenPrint(self,msg):
-        self._screen.addstr(self._ypos, self._xpos,msg)
+    def screenPrint(self,msg,attribute=None):
+        if(attribute):
+            self._screen.addstr(self._ypos, self._xpos,msg,attribute)
+        else:
+            self._screen.addstr(self._ypos, self._xpos,msg)
         self.updateScreen();
     
     #clears the screen
     def clearScreen(self):
-        i=0;
         for x in range(self._begin_x,self._width):
             for y in range(self._begin_y,self._height):
                 self._screen.addstr(y,x,"\n");
@@ -69,3 +74,8 @@ class Screen:
     def readKey(self):
         return self._screen.getch()
     
+    def setCustomColor(self,color1,color2):
+        curses.init_pair(1, color1, color2)
+        
+    def getCustomColorAtr(self):
+        return curses.color_pair(1)

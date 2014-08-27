@@ -2,6 +2,8 @@
     <slide>
         <TextComponent positionX="10"
                        positionY="0"
+                       colors="red,black"
+                       attributes="bold"
         >Presentation Title</TextComponent>
     </slide>
     <slide>

@@ -22,6 +22,8 @@ import os
 
 from PresFrameWork.Slide import * 
 from PresFrameWork.TextComponent import * 
+
+
 from PresUtils.Screen import *;
 
 class Presentation:
@@ -49,7 +51,9 @@ class Presentation:
                 if xml_component.tag=="TextComponent":
                     posx=int(xml_component.get("positionX"));
                     posy=int(xml_component.get("positionY"));
-                    component=TextComponent(posx,posy,xml_component.text);
+                    atrs=xml_component.get("attributes");
+                    colors=xml_component.get("colors");
+                    component=TextComponent(posx,posy,xml_component.text,atrs,colors);
                 if not (component is None):
                     slide.append(component);
             self.append(slide)
