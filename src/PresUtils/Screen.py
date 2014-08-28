@@ -31,9 +31,11 @@ class Screen:
     def __init__(self):
         self._begin_x =0; 
         self._begin_y = 0
-        self._height = 40; 
-        self._width = 40;
+       
         self._screen=curses.initscr();
+        self._height,self._width = self._screen.getmaxyx();
+        self._height=self._height-1
+        self._width=self._width-1
         self._xpos=0;
         self._ypos=0;
     
@@ -45,7 +47,7 @@ class Screen:
         curses.cbreak() 
         curses.curs_set(0)
         self._screen.keypad(1)
-        win = curses.newwin(self._height, self._width, self._begin_y, self._begin_x);
+        
         
     def closeScreen(self):
         curses.endwin()
@@ -55,6 +57,10 @@ class Screen:
     
     #sets the cursor in the position you pass
     def setCursorPosition(self,x,y):
+        if x>=self._width or y>=self._height:
+            return
+        if x<0 or y<0:
+            return
         self._xpos=x
         self._ypos=y
         
@@ -67,9 +73,12 @@ class Screen:
     
     #clears the screen
     def clearScreen(self):
-        for x in range(self._begin_x,self._width):
-            for y in range(self._begin_y,self._height):
-                self._screen.addstr(y,x,"\n");
+        #erase the screen, be sure update the screen dimensions
+        self._height,self._width = self._screen.getmaxyx();
+        self._height=self._height-1
+        self._width=self._width-1
+        for y in range(self._begin_y,self._height):
+            self._screen.addstr(y,0,"\n");
             
     def readKey(self):
         return self._screen.getch()

@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 #CmdPres Presentations for command line
 # --  * <cmdpres.py>
 # --  * Copyright (C) Angel Baltar Diaz
@@ -20,26 +22,39 @@ import traceback
 
 from PresFrameWork.Presentation import *;
 from PresUtils.Screen import *;
+from PresUtils import Utils;
 
 __author__="angel"
 __date__ ="$22-ago-2014 12:39:52$"
+
+
+
+def doPresentation(pres_path):
+    try:
+        Screen.Instance().openScreen();
+        pres=Presentation();
+        if not pres.load(pres_path):
+            Screen.Instance().screenPrint("Cant load the presentation ")
+        else:
+            pres.open();
+        Screen.Instance().closeScreen()
+    except Exception as ex:
+        Screen.Instance().closeScreen()
+        traceback.print_exc()
+        print str(ex)
+    finally:
+        pass
+
+def printHelp():
+    print "CmdPres ",Utils.VersionNumber," Command line Presentations"
+    print "Usage: cmdpres.py <path_to_presentation>"
 
 if __name__ == "__main__":
     if len(sys.argv)!=2:
         print "wrong parameters"
     else:
         pres_path=sys.argv[1]
-        try:
-            Screen.Instance().openScreen();
-            pres=Presentation();
-            if not pres.load(pres_path):
-                Screen.Instance().screenPrint("Cant load the presentation ")
-            else:
-                pres.open();
-            Screen.Instance().closeScreen()
-        except Exception as ex:
-                Screen.Instance().closeScreen()
-                traceback.print_exc()
-                print str(ex)
-        finally:
-            pass
+        if(pres_path=="--help" or pres_path=="-h"):
+            printHelp()
+        else:
+            doPresentation(pres_path)

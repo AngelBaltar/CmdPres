@@ -22,6 +22,8 @@ Created on 25/8/2014
 @author: angel
 '''
 
+VersionNumber="V0.0.1b"
+
 class Singleton:
     """
     A non-thread-safe helper class to ease implementing singletons.
