@@ -43,14 +43,14 @@ class Test(unittest.TestCase):
 
 
     def testXmlSchema1(self):
-        Screen.Instance().openScreen()
         pres=Presentation();
+        Screen.Instance().openScreen(pres)
         self.assertTrue(pres.load("./test/pres_ok1.xml"))
         Screen.Instance().closeScreen()
         
     def testXmlSchema2(self):
-        Screen.Instance().openScreen()
         pres=Presentation();
+        Screen.Instance().openScreen(pres)
         self.assertFalse(pres.load("./test/pres_fail1.xml"))
         Screen.Instance().closeScreen()
 

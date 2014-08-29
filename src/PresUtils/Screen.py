@@ -23,7 +23,7 @@ import curses
 import locale
 
 from PresUtils.Utils import *
-
+from PresUtils.Menu import *
 
 @Singleton
 class Screen:
@@ -38,8 +38,9 @@ class Screen:
         self._width=self._width-1
         self._xpos=0;
         self._ypos=0;
+        self._menu=Menu()
     
-    def openScreen(self):
+    def openScreen(self,pres):
         locale.setlocale(locale.LC_ALL, '')
         code = locale.getpreferredencoding()
         curses.start_color()
@@ -47,12 +48,18 @@ class Screen:
         curses.cbreak() 
         curses.curs_set(0)
         self._screen.keypad(1)
+
+        self._menu.addMenuItem("prev(<-)",curses.KEY_LEFT,pres.prevSlide)
+        self._menu.addMenuItem("next(->)",curses.KEY_RIGHT,pres.nextSlide)
+        self._menu.addMenuItem("quit(q)",ord('q'),pres.quit)
         
         
     def closeScreen(self):
         curses.endwin()
         
     def updateScreen(self):
+        self._menu.show()
+        self._menu.update()
         self._screen.refresh()
     
     #sets the cursor in the position you pass
@@ -69,7 +76,6 @@ class Screen:
             self._screen.addstr(self._ypos, self._xpos,msg,attribute)
         else:
             self._screen.addstr(self._ypos, self._xpos,msg)
-        self.updateScreen();
     
     #clears the screen
     def clearScreen(self):
@@ -79,6 +85,12 @@ class Screen:
         self._width=self._width-1
         for y in range(self._begin_y,self._height):
             self._screen.addstr(y,0,"\n");
+
+    def getHeigh(self):
+        return self._height
+
+    def getWidth(self):
+        return self._width
             
     def readKey(self):
         return self._screen.getch()

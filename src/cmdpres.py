@@ -31,8 +31,8 @@ __date__ ="$22-ago-2014 12:39:52$"
 
 def doPresentation(pres_path):
     try:
-        Screen.Instance().openScreen();
         pres=Presentation();
+        Screen.Instance().openScreen(pres);
         if not pres.load(pres_path):
             Screen.Instance().screenPrint("Cant load the presentation ")
         else:

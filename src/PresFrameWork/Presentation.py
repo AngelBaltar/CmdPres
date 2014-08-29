@@ -30,7 +30,9 @@ class Presentation:
     
     #constructor for the class
     def __init__(self):
-        self._slides=[];
+        self._slides=[]
+        self._sl=0
+        self._quit=False
     
     #loads the presentation in the passed path
     def load(self,path):
@@ -59,18 +61,24 @@ class Presentation:
             self.append(slide)
         return True
                 
-        
+    def prevSlide(self):
+        self._sl-=1
+        if self._sl<0:
+            self._sl=0
+
+    def nextSlide(self):
+        self._sl+=1
+        if self._sl>=len(self._slides):
+            self._sl=len(self._slides)-1
+
+    def quit(self):
+        self._quit=True
+
     def open(self):
         sl=0;
-        while True:
-            self._slides[sl].show()
-            c=self._slides[sl].update()
-            if c==Slide.QUIT_PRES:
-                break;
-            if c==Slide.NEXT_SLIDE or c==Slide.PREV_SLIDE:
-                sl=sl+c;
-                
-            sl=sl%len(self._slides)
+        while not self._quit:
+            self._slides[self._sl].show()
+            Screen.Instance().updateScreen()
         
     def append(self,slide):
         self._slides.append(slide)
