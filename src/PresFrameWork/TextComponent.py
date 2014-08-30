@@ -44,10 +44,6 @@ class TextComponent(SlideComponent):
         if(color):
             self._color1=map(self._colorsMap,color.split(','))[0]
             self._color2=map(self._colorsMap,color.split(','))[1]
-            if type(self._atrs)==int:
-                self._atrs|=Screen.Instance().getCustomColorAtr()
-            else:
-                self._atrs=Screen.Instance().getCustomColorAtr()
         SlideComponent.__init__(self,x,y)
     
     def _colorsMap(self,c):
@@ -58,6 +54,12 @@ class TextComponent(SlideComponent):
             return curses.COLOR_RED
         if(c=="white"):
             return curses.COLOR_WHITE
+        if(c=="blue"):
+            return curses.COLOR_BLUE
+        if(c=="green"):
+            return curses.COLOR_GREEN
+        if(c=="yellow"):
+            return curses.COLOR_YELLOW
         return None
     
     def _attributesMap(self,c):
@@ -71,6 +73,10 @@ class TextComponent(SlideComponent):
     #shows the text component
     def show(self):
         SlideComponent.show(self)
+        atrs=self._atrs
         if self._color1!=None and self._color2!=None:
-            Screen.Instance().setCustomColor(self._color1,self._color2)
-        Screen.Instance().screenPrint(self._text,self._atrs)
+            if atrs!=None:
+                atrs|=Screen.Instance().getCustomColorAtr(self._color1,self._color2)
+            else:
+                atrs=Screen.Instance().getCustomColorAtr(self._color1,self._color2)
+        Screen.Instance().screenPrint(self._text,atrs)

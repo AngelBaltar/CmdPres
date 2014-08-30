@@ -18,6 +18,7 @@
 
 __author__="angel"
 
+import curses
 
 class Menu:
 	
@@ -37,14 +38,15 @@ class Menu:
 		 x=0
 		 y=Screen.Instance().getHeigh()-2
 		 first=True
+		 atrs=Screen.Instance().getCustomColorAtr(curses.COLOR_WHITE,curses.COLOR_RED)|curses.A_BOLD
 		 for item in self._items:
 		 	Screen.Instance().setCursorPosition(x,y)
 		 	if not first:
-		 		Screen.Instance().screenPrint("|")
+		 		Screen.Instance().screenPrint("|",atrs)
 		 		x+=1
 		 		Screen.Instance().setCursorPosition(x,y)
 
-		 	Screen.Instance().screenPrint(item["name"])
+		 	Screen.Instance().screenPrint(item["name"],atrs)
 		 	x+=len(item["name"])
 		 	first=False
 

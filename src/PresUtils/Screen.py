@@ -39,6 +39,7 @@ class Screen:
         self._xpos=0;
         self._ypos=0;
         self._menu=Menu()
+        self._colorIdx=0
     
     def openScreen(self,pres):
         locale.setlocale(locale.LC_ALL, '')
@@ -58,9 +59,9 @@ class Screen:
         curses.endwin()
         
     def updateScreen(self):
+        self._screen.refresh()
         self._menu.show()
         self._menu.update()
-        self._screen.refresh()
     
     #sets the cursor in the position you pass
     def setCursorPosition(self,x,y):
@@ -76,6 +77,7 @@ class Screen:
             self._screen.addstr(self._ypos, self._xpos,msg,attribute)
         else:
             self._screen.addstr(self._ypos, self._xpos,msg)
+        self._screen.refresh()
     
     #clears the screen
     def clearScreen(self):
@@ -95,8 +97,20 @@ class Screen:
     def readKey(self):
         return self._screen.getch()
     
-    def setCustomColor(self,color1,color2):
-        curses.init_pair(1, color1, color2)
+    def _findColor(self,color1,color2):
+        for i in range(1,curses.COLOR_PAIRS):
+            f,b=curses.pair_content(i)
+            if f==color1 and b==color2:
+                return i
+        return -1
+
         
-    def getCustomColorAtr(self):
-        return curses.color_pair(1)
+    def getCustomColorAtr(self,color1,color2):
+        cl=self._findColor(color1,color2)
+        if cl==-1:
+            curses.init_pair(self._colorIdx+1, color1, color2)
+            self._colorIdx+=1
+            self._colorIdx%=curses.COLOR_PAIRS
+            return curses.color_pair(self._findColor(color1,color2))
+        else:
+            return curses.color_pair(cl)

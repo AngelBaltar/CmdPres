@@ -2,7 +2,7 @@
     <slide>
         <TextComponent positionX="10"
                        positionY="0"
-                       colors="red,black"
+                       colors="green,yellow"
                        attributes="bold"
         >Presentation Title</TextComponent>
     </slide>
