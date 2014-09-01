@@ -47,7 +47,7 @@ class Screen:
         curses.start_color()
         curses.noecho()
         curses.cbreak() 
-        curses.curs_set(1)
+        curses.curs_set(2)
         self._screen.keypad(1)
 
         self._menu.addMenuItem("prev(<-)",curses.KEY_LEFT,pres.prevSlide)
@@ -62,6 +62,16 @@ class Screen:
         self._screen.refresh()
         self._menu.show()
         self._menu.update()
+        
+        #be sure update the screen dimensions
+        self._height,self._width = self._screen.getmaxyx();
+        self._height=self._height-1
+        self._width=self._width-1
+
+
+        # x,y=curses.getsyx()
+        # self.setCursorPosition(0,0)
+        # self.screenPrint(str(unichr(self.readKey())))
     
     #sets the cursor in the position you pass
     def setCursorPosition(self,x,y):
@@ -81,12 +91,8 @@ class Screen:
     
     #clears the screen
     def clearScreen(self):
-        #erase the screen, be sure update the screen dimensions
-        self._height,self._width = self._screen.getmaxyx();
-        self._height=self._height-1
-        self._width=self._width-1
-        for y in range(self._begin_y,self._height):
-            self._screen.addstr(y,0,"\n");
+        #erase the screen
+        self._screen.clear()
 
     def getHeigh(self):
         return self._height
