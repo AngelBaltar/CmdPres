@@ -59,17 +59,21 @@ class Presentation:
                 if not (component is None):
                     slide.append(component);
             self.append(slide)
+        Screen.Instance().getMenu().setSlides(len(self._slides))
+        Screen.Instance().getMenu().setCountSlide(self._sl+1)
         return True
                 
     def prevSlide(self):
         self._sl-=1
         if self._sl<0:
             self._sl=0
+        Screen.Instance().getMenu().setCountSlide(self._sl+1)
 
     def nextSlide(self):
         self._sl+=1
         if self._sl>=len(self._slides):
             self._sl=len(self._slides)-1
+        Screen.Instance().getMenu().setCountSlide(self._sl+1)
 
     def quit(self):
         self._quit=True

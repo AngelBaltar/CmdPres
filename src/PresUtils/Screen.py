@@ -47,7 +47,7 @@ class Screen:
         curses.start_color()
         curses.noecho()
         curses.cbreak() 
-        curses.curs_set(0)
+        curses.curs_set(1)
         self._screen.keypad(1)
 
         self._menu.addMenuItem("prev(<-)",curses.KEY_LEFT,pres.prevSlide)
@@ -114,3 +114,6 @@ class Screen:
             return curses.color_pair(self._findColor(color1,color2))
         else:
             return curses.color_pair(cl)
+
+    def getMenu(self):
+        return self._menu

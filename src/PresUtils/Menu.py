@@ -24,6 +24,8 @@ class Menu:
 	
 	def __init__(self):
 		self._items=[]
+		self._countSlide=1
+		self._nSlides=0
 
 	def addMenuItem(self,title,but,fun):
 		item={
@@ -32,6 +34,12 @@ class Menu:
 			"button":but
 		}
 		self._items.append(item)
+
+	def setSlides(self,n):
+		self._nSlides=n
+
+	def setCountSlide(self,n):
+		self._countSlide=n
 
 	def show(self):
 		 from PresUtils.Screen import *
@@ -49,6 +57,10 @@ class Menu:
 		 	Screen.Instance().screenPrint(item["name"],atrs)
 		 	x+=len(item["name"])
 		 	first=False
+		 slide_str="Slide:"+str(self._countSlide)+"/"+str(self._nSlides)
+		 x=Screen.Instance().getWidth()-len(slide_str)
+		 Screen.Instance().setCursorPosition(x,y)
+		 Screen.Instance().screenPrint(slide_str,atrs)
 
 	def update(self):
 		from PresUtils.Screen import *

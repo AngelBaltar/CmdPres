@@ -1,0 +1,35 @@
+<presentation>
+    <slide>
+        <TextComponent positionX="10"
+                       positionY="0"
+                       colors="green,yellow"
+                       attributes="bold"
+        >CmdPress</TextComponent>
+        <TextComponent positionX="0"
+                       positionY="3"
+        >Easy presentations and text notes for your terminal, features:</TextComponent>
+        <TextComponent positionX="4"
+                       positionY="5"
+        >* Simple text</TextComponent>
+        <TextComponent positionX="4"
+                       positionY="6"
+        >* Text with atributes(</TextComponent>
+        <TextComponent positionX="26"
+                       positionY="6"
+                       attributes="bold"
+        >bold</TextComponent>
+        <TextComponent positionX="30"
+                       positionY="6"
+        >,</TextComponent>
+        <TextComponent positionX="31"
+                       positionY="6"
+                       attributes="underline"
+        >underline</TextComponent>
+        <TextComponent positionX="40"
+                       positionY="6"
+        >) and colors(Background and Foreground)</TextComponent>
+        <TextComponent positionX="4"
+                       positionY="7"
+        >* Simple XML format for presentations</TextComponent>
+    </slide>
+</presentation>
