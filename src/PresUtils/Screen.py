@@ -22,6 +22,8 @@ __date__ ="$23-ago-2014 12:10:52$"
 import curses
 import locale
 
+import curses.ascii
+
 from PresUtils.Utils import *
 from PresUtils.Menu import *
 
@@ -40,6 +42,22 @@ class Screen:
         self._ypos=0;
         self._menu=Menu()
         self._colorIdx=0
+        self._editMode=False
+
+
+    def quitEdit(self):
+        self._editMode=False
+        self._pres.setEdit(self._editMode)
+        self._menu.dropMenuItem("presMode(^e)")
+        self._menu.addMenuItem("editMode(^e)",ord(curses.ascii.ctrl('e')),self.edit)
+
+    def edit(self):
+        self._editMode=True
+        self._pres.setEdit(self._editMode)
+        self._menu.dropMenuItem("editMode(^e)")
+        self._menu.addMenuItem("presMode(^e)",ord(curses.ascii.ctrl('e')),self.quitEdit)
+        self.setCursorPosition(0,0)
+        self.clearScreen()
     
     def openScreen(self,pres):
         locale.setlocale(locale.LC_ALL, '')
@@ -49,10 +67,14 @@ class Screen:
         curses.cbreak() 
         curses.curs_set(2)
         self._screen.keypad(1)
+        self._pres=pres
 
-        self._menu.addMenuItem("prev(<-)",curses.KEY_LEFT,pres.prevSlide)
-        self._menu.addMenuItem("next(->)",curses.KEY_RIGHT,pres.nextSlide)
-        self._menu.addMenuItem("quit(q)",ord('q'),pres.quit)
+        self._menu.addMenuItem("prev(<-)",curses.KEY_LEFT, self._pres.prevSlide)
+        self._menu.addMenuItem("next(->)",curses.KEY_RIGHT,self._pres.nextSlide)
+        self._menu.addMenuItem("quit(^a)",ord(curses.ascii.ctrl('a')),self._pres.quit)
+
+        ## DISABLE EDIT MODE, ITS UNDER CONSTRUCTION NOT FINISHED YET
+        #self._menu.addMenuItem("editMode(^e)",ord(curses.ascii.ctrl('e')),self.edit)
         
         
     def closeScreen(self):
@@ -61,17 +83,23 @@ class Screen:
     def updateScreen(self):
         self._screen.refresh()
         self._menu.show()
-        self._menu.update()
+        c=self.readKey()
         
         #be sure update the screen dimensions
         self._height,self._width = self._screen.getmaxyx();
         self._height=self._height-1
         self._width=self._width-1
 
-
-        # x,y=curses.getsyx()
-        # self.setCursorPosition(0,0)
-        # self.screenPrint(str(unichr(self.readKey())))
+        if curses.ascii.isctrl(c) or curses.ascii.ismeta(c):
+            self._menu.update(c)
+        else:
+            if self._editMode:
+                self.setCursorPosition(self._xpos,self._ypos)
+                self.screenPrint(chr(c))
+                if c=='\n':
+                    self.setCursorPosition(self._xpos,self._ypos+1)
+                else:
+                    self.setCursorPosition(self._xpos+1,self._ypos)
     
     #sets the cursor in the position you pass
     def setCursorPosition(self,x,y):
@@ -81,7 +109,11 @@ class Screen:
             return
         self._xpos=x
         self._ypos=y
-        
+        curses.setsyx(y,x)
+
+    def getCursorPosition(self):
+        return self._xpos,self._ypos
+
     def screenPrint(self,msg,attribute=None):
         if(attribute):
             self._screen.addstr(self._ypos, self._xpos,msg,attribute)
@@ -101,7 +133,8 @@ class Screen:
         return self._width
             
     def readKey(self):
-        return self._screen.getch()
+        c=self._screen.getch()
+        return c
     
     def _findColor(self,color1,color2):
         for i in range(1,curses.COLOR_PAIRS):

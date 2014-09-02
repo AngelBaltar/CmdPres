@@ -33,6 +33,7 @@ class Presentation:
         self._slides=[]
         self._sl=0
         self._quit=False
+        self._edit=False
     
     #loads the presentation in the passed path
     def load(self,path):
@@ -75,13 +76,17 @@ class Presentation:
             self._sl=len(self._slides)-1
         Screen.Instance().getMenu().setCountSlide(self._sl+1)
 
+    def setEdit(self,ed):
+        self._edit=ed
+
     def quit(self):
         self._quit=True
 
     def open(self):
         sl=0;
         while not self._quit:
-            self._slides[self._sl].show()
+            if not self._edit:
+                self._slides[self._sl].show()
             Screen.Instance().updateScreen()
         
     def append(self,slide):

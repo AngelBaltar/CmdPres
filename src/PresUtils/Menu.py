@@ -35,6 +35,15 @@ class Menu:
 		}
 		self._items.append(item)
 
+	def dropMenuItem(self,title):
+		to_drop=None
+		for el in self._items:
+			if el["name"]==title:
+				to_drop=el
+				break
+		if to_drop!=None:
+			self._items.remove(to_drop)
+
 	def setSlides(self,n):
 		self._nSlides=n
 
@@ -43,6 +52,8 @@ class Menu:
 
 	def show(self):
 		 from PresUtils.Screen import *
+		 
+		 backup_x,backup_y=Screen.Instance().getCursorPosition()
 		 x=0
 		 y=Screen.Instance().getHeigh()-2
 		 first=True
@@ -61,10 +72,9 @@ class Menu:
 		 x=Screen.Instance().getWidth()-len(slide_str)
 		 Screen.Instance().setCursorPosition(x,y)
 		 Screen.Instance().screenPrint(slide_str,atrs)
+		 Screen.Instance().setCursorPosition(backup_x,backup_y)
 
-	def update(self):
-		from PresUtils.Screen import *
-		c=Screen.Instance().readKey()
+	def update(self,c):
 		for item in self._items:
 			if c==item["button"]:
 				item["function"]()
