@@ -26,6 +26,7 @@ class Menu:
 		self._items=[]
 		self._countSlide=1
 		self._nSlides=0
+		self._heigh=2
 
 	def addMenuItem(self,title,but,fun):
 		item={
@@ -50,12 +51,16 @@ class Menu:
 	def setCountSlide(self,n):
 		self._countSlide=n
 
+	def getHeigh(self):
+		return self._heigh
+
 	def show(self):
 		 from PresUtils.Screen import *
-		 
+		 #make screen not consider the menu
+		 self._heigh=0
 		 backup_x,backup_y=Screen.Instance().getCursorPosition()
 		 x=0
-		 y=Screen.Instance().getHeigh()-2
+		 y=Screen.Instance().getHeigh()-self.getHeigh()
 		 first=True
 		 atrs=Screen.Instance().getCustomColorAtr(curses.COLOR_WHITE,curses.COLOR_RED)|curses.A_BOLD
 		 for item in self._items:
@@ -73,6 +78,8 @@ class Menu:
 		 Screen.Instance().setCursorPosition(x,y)
 		 Screen.Instance().screenPrint(slide_str,atrs)
 		 Screen.Instance().setCursorPosition(backup_x,backup_y)
+		 #make screen consider the menu again
+		 self._heigh=2
 
 	def update(self,c):
 		for item in self._items:

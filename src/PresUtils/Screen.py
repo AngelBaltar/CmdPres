@@ -49,15 +49,26 @@ class Screen:
         self._editMode=False
         self._pres.setEdit(self._editMode)
         self._menu.dropMenuItem("presMode(^e)")
+        
         self._menu.addMenuItem("editMode(^e)",ord(curses.ascii.ctrl('e')),self.edit)
+        self._menu.addMenuItem("prev(<-)",curses.KEY_LEFT, self._pres.prevSlide)
+        self._menu.addMenuItem("next(->)",curses.KEY_RIGHT,self._pres.nextSlide)
+
+        curses.noecho()
+        curses.curs_set(0)
 
     def edit(self):
         self._editMode=True
         self._pres.setEdit(self._editMode)
         self._menu.dropMenuItem("editMode(^e)")
+        self._menu.dropMenuItem("prev(<-)")
+        self._menu.dropMenuItem("next(->)")
+
         self._menu.addMenuItem("presMode(^e)",ord(curses.ascii.ctrl('e')),self.quitEdit)
-        self.setCursorPosition(0,0)
         self.clearScreen()
+        curses.echo()
+        curses.curs_set(2)
+        self.setCursorPosition(0,0)
     
     def openScreen(self,pres):
         locale.setlocale(locale.LC_ALL, '')
@@ -65,13 +76,12 @@ class Screen:
         curses.start_color()
         curses.noecho()
         curses.cbreak() 
-        curses.curs_set(2)
         self._screen.keypad(1)
         self._pres=pres
-
+        curses.curs_set(0)
         self._menu.addMenuItem("prev(<-)",curses.KEY_LEFT, self._pres.prevSlide)
         self._menu.addMenuItem("next(->)",curses.KEY_RIGHT,self._pres.nextSlide)
-        self._menu.addMenuItem("quit(^a)",ord(curses.ascii.ctrl('a')),self._pres.quit)
+        self._menu.addMenuItem("quit(^x)",ord(curses.ascii.ctrl('x')),self._pres.quit)
 
         ## DISABLE EDIT MODE, ITS UNDER CONSTRUCTION NOT FINISHED YET
         #self._menu.addMenuItem("editMode(^e)",ord(curses.ascii.ctrl('e')),self.edit)
@@ -82,27 +92,39 @@ class Screen:
         
     def updateScreen(self):
         self._screen.refresh()
+        self._screen.cursyncup()
         self._menu.show()
         c=self.readKey()
         
         #be sure update the screen dimensions
         self._height,self._width = self._screen.getmaxyx();
-        self._height=self._height-1
+        self._height=self._height-1-self._menu.getHeigh()
         self._width=self._width-1
 
-        if curses.ascii.isctrl(c) or curses.ascii.ismeta(c):
+        if curses.ascii.isctrl(c):
             self._menu.update(c)
         else:
             if self._editMode:
-                self.setCursorPosition(self._xpos,self._ypos)
-                self.screenPrint(chr(c))
-                if c=='\n':
-                    self.setCursorPosition(self._xpos,self._ypos+1)
-                else:
+                if c==curses.KEY_LEFT:
+                    self.setCursorPosition(self._xpos-1,self._ypos)
+                    return
+                if c==curses.KEY_RIGHT:
                     self.setCursorPosition(self._xpos+1,self._ypos)
+                    return
+                if c==curses.KEY_DOWN:
+                    self.setCursorPosition(self._xpos,self._ypos+1)
+                    return
+                if c==curses.KEY_UP:
+                    self.setCursorPosition(self._xpos,self._ypos-1)
+                    return
+                #catch character
+
     
     #sets the cursor in the position you pass
     def setCursorPosition(self,x,y):
+        self._height,self._width = self._screen.getmaxyx();
+        self._height=self._height-1-self._menu.getHeigh()
+        self._width=self._width-1
         if x>=self._width or y>=self._height:
             return
         if x<0 or y<0:
@@ -110,6 +132,7 @@ class Screen:
         self._xpos=x
         self._ypos=y
         curses.setsyx(y,x)
+        self._screen.move(y,x)
 
     def getCursorPosition(self):
         return self._xpos,self._ypos
