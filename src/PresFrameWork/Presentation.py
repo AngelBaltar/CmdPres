@@ -69,12 +69,14 @@ class Presentation:
         if self._sl<0:
             self._sl=0
         Screen.Instance().getMenu().setCountSlide(self._sl+1)
+        Screen.Instance().clearScreen()
 
     def nextSlide(self):
         self._sl+=1
         if self._sl>=len(self._slides):
             self._sl=len(self._slides)-1
         Screen.Instance().getMenu().setCountSlide(self._sl+1)
+        Screen.Instance().clearScreen()
 
     def setEdit(self,ed):
         self._edit=ed
@@ -82,11 +84,18 @@ class Presentation:
     def quit(self):
         self._quit=True
 
+
+    def editCharacter(self,ch,posx,posy):
+        if not self._edit:
+            return
+        self._slides[self._sl].editCharacter(ch,posx,posy)
+
+
     def open(self):
         sl=0;
         while not self._quit:
-            if not self._edit:
-                self._slides[self._sl].show()
+            #if not self._edit:
+            self._slides[self._sl].show()
             Screen.Instance().updateScreen()
         
     def append(self,slide):

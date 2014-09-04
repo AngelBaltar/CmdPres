@@ -71,8 +71,7 @@ class TextComponent(SlideComponent):
         return None
     
     #shows the text component
-    def show(self):
-        SlideComponent.show(self)
+    def _componentShow(self):
         atrs=self._atrs
         if self._color1!=None and self._color2!=None:
             if atrs!=None:
@@ -80,3 +79,17 @@ class TextComponent(SlideComponent):
             else:
                 atrs=Screen.Instance().getCustomColorAtr(self._color1,self._color2)
         Screen.Instance().screenPrint(self._text,atrs)
+
+    def getEnd(self):
+        startx,starty=self.getPosition()
+        return startx+len(self._text),starty+1
+
+    def editCharacter(self,ch,posx,posy):
+        startx,starty=self.getPosition()
+        xoffset=posx-startx-1
+        list_str=list(self._text)
+        if xoffset==len(list_str):
+            list_str.append(chr(ch))
+        else:
+            list_str[xoffset]=chr(ch)
+        self._text="".join(list_str)

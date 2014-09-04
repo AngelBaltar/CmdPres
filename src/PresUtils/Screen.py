@@ -65,7 +65,6 @@ class Screen:
         self._menu.dropMenuItem("next(->)")
 
         self._menu.addMenuItem("presMode(^e)",ord(curses.ascii.ctrl('e')),self.quitEdit)
-        self.clearScreen()
         curses.echo()
         curses.curs_set(2)
         self.setCursorPosition(0,0)
@@ -117,8 +116,9 @@ class Screen:
                 if c==curses.KEY_UP:
                     self.setCursorPosition(self._xpos,self._ypos-1)
                     return
-                #catch character
-
+                self.setCursorPosition(self._xpos+1,self._ypos)
+                #catch the character to the presentation
+                self._pres.editCharacter(c,self._xpos,self._ypos)
     
     #sets the cursor in the position you pass
     def setCursorPosition(self,x,y):

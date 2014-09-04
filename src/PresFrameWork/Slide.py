@@ -33,9 +33,27 @@ class Slide:
         
     #shows the slide
     def show(self):
-        Screen.Instance().clearScreen()
         for c in self._components:
             c.show();
+
+    def _findComponent(self,posx,posy):
+        endx=0
+        endy=0
+        startx=0
+        starty=0
+        for comp in self._components:
+            endx,endy=comp.getEnd()
+            startx,starty=comp.getPosition()
+            if posx>=startx and posx<=endx and posy>=starty and posy<=endy:
+                return comp
+        return None
+
+    def editCharacter(self,ch,posx,posy):
+        comp=self._findComponent(posx,posy)
+        if comp!=None:
+            comp.editCharacter(ch,posx,posy)
+        else:
+            raise Exception("component to edit not found")
     
     #updates the slide reading from devices
     def update(self):

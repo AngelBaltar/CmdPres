@@ -33,4 +33,19 @@ class SlideComponent:
         self._positionY=y;
         
     def show(self):
+        backupx,backupy=Screen.Instance().getCursorPosition()
         Screen.Instance().setCursorPosition(self._positionX,self._positionY);
+        self._componentShow()
+        Screen.Instance().setCursorPosition(backupx,backupy);
+
+    def _componentShow(self):
+        pass
+
+    def getEnd(self):
+        return 0,0
+
+    def getPosition(self):
+        return self._positionX,self._positionY
+
+    def editCharacter(self,ch,posx,posy):
+        pass
