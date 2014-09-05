@@ -84,6 +84,14 @@ class Presentation:
     def quit(self):
         self._quit=True
 
+    def save(self,path):
+        root = etree.Element("presentation")
+        for sl in self._slides:
+            sl.save(root)
+        fich=open(str(path),str('w'))
+        fich.write(etree.tostring(root))
+        fich.close()
+
 
     def editCharacter(self,ch,posx,posy):
         if not self._edit:

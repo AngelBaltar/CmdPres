@@ -23,7 +23,8 @@ Created on 25/8/2014
 '''
 
 import os, sys, unittest
-
+import tempfile
+from lxml import etree
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR)+"/src/")
@@ -53,6 +54,17 @@ class Test(unittest.TestCase):
         Screen.Instance().openScreen(pres)
         self.assertFalse(pres.load("./test/pres_fail1.xml"))
         Screen.Instance().closeScreen()
+
+    def testPresSave1(self):
+        pres=Presentation();
+        Screen.Instance().openScreen(pres)
+        self.assertTrue(pres.load("./test/pres_ok1.xml"))
+        Screen.Instance().closeScreen()
+        tmpfile=tempfile.NamedTemporaryFile(suffix=".xml").name
+        pres.save(tmpfile)
+        tree1 = etree.parse("./test/pres_ok1.xml")
+        tree2 = etree.parse(tmpfile)
+        self.assertTrue(etree.tostring(tree1)==etree.tostring(tree2))
 
 
 if __name__ == "__main__":

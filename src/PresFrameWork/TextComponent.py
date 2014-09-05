@@ -21,7 +21,7 @@ import curses
 
 from PresFrameWork.SlideComponent import *;
 from PresUtils.Screen import *;
-
+from lxml import etree
 
 class TextComponent(SlideComponent):
     
@@ -48,27 +48,35 @@ class TextComponent(SlideComponent):
     
     def _colorsMap(self,c):
         """ maps string colors to attribute colors"""
-        if(c=="black"):
-            return curses.COLOR_BLACK
-        if(c=="red"):
-            return curses.COLOR_RED
-        if(c=="white"):
-            return curses.COLOR_WHITE
-        if(c=="blue"):
-            return curses.COLOR_BLUE
-        if(c=="green"):
-            return curses.COLOR_GREEN
-        if(c=="yellow"):
-            return curses.COLOR_YELLOW
-        return None
+        
+        color_map={
+            "black":curses.COLOR_BLACK,
+            "red":curses.COLOR_RED,
+            "white":curses.COLOR_WHITE,
+            "blue":curses.COLOR_BLUE,
+            "green":curses.COLOR_GREEN,
+            "yellow":curses.COLOR_YELLOW
+            }
+
+        try:
+            return color_map[c]
+        except KeyError:
+            for k,cl in color_map.iteritems():
+                if cl==c:
+                    return k
     
     def _attributesMap(self,c):
         """ maps string attributes to curses attributes"""
-        if(c=="bold"):
-            return curses.A_BOLD
-        if(c=="underline"):
-            return curses.A_UNDERLINE
-        return None
+        atr_map={
+            "bold":curses.A_BOLD,
+            "underline":curses.A_UNDERLINE
+            }
+        try: 
+            return atr_map[c]
+        except KeyError:
+             for k,atr in atr_map.iteritems():
+                if atr==c:
+                    return k
     
     #shows the text component
     def _componentShow(self):
@@ -93,3 +101,20 @@ class TextComponent(SlideComponent):
         else:
             list_str[xoffset]=chr(ch)
         self._text="".join(list_str)
+
+    def save(self,root):
+        textcomp=etree.Element("TextComponent")
+        textcomp.text=self._text
+        posx,posy=self.getPosition()
+        colors=self._colorsMap(self._color1)
+        if colors!=None:
+            colors=colors+","
+            colors=colors+self._colorsMap(self._color2)
+        attributes=self._attributesMap(self._atrs)
+        textcomp.set("positionX",str(posx))
+        textcomp.set("positionY",str(posy))
+        if colors!=None:
+            textcomp.set("colors",colors)
+        if attributes!=None:
+            textcomp.set("attributes",attributes)
+        root.append(textcomp)

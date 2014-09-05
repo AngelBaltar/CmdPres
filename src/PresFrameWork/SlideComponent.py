@@ -41,6 +41,9 @@ class SlideComponent:
     def _componentShow(self):
         pass
 
+    def save(self,root):
+        pass
+
     def getEnd(self):
         return 0,0
 

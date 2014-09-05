@@ -19,7 +19,7 @@
 import curses
 
 from PresUtils.Screen import *
-
+from lxml import etree
 
 class Slide:
     
@@ -68,3 +68,9 @@ class Slide:
     #adds a component for the slide
     def append(self,component):
         self._components.append(component);
+
+    def save(self,root):
+        slide=etree.Element("slide")
+        for comp in self._components:
+            comp.save(slide)
+        root.append(slide)
