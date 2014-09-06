@@ -49,12 +49,12 @@ class Screen:
         self._editMode=False
         self._pres.setEdit(self._editMode)
         self._menu.dropMenuItem("presMode(^e)")
-        
+        self._menu.dropMenuItem("save(^w)")
+
         self._menu.addMenuItem("editMode(^e)",ord(curses.ascii.ctrl('e')),self.edit)
         self._menu.addMenuItem("prev(<-)",curses.KEY_LEFT, self._pres.prevSlide)
         self._menu.addMenuItem("next(->)",curses.KEY_RIGHT,self._pres.nextSlide)
 
-        curses.noecho()
         curses.curs_set(0)
 
     def edit(self):
@@ -65,7 +65,7 @@ class Screen:
         self._menu.dropMenuItem("next(->)")
 
         self._menu.addMenuItem("presMode(^e)",ord(curses.ascii.ctrl('e')),self.quitEdit)
-        curses.echo()
+        self._menu.addMenuItem("save(^w)",ord(curses.ascii.ctrl('w')),self._menu.save)
         curses.curs_set(2)
         self.setCursorPosition(0,0)
     
@@ -84,6 +84,8 @@ class Screen:
 
         ## DISABLE EDIT MODE, ITS UNDER CONSTRUCTION NOT FINISHED YET
         #self._menu.addMenuItem("editMode(^e)",ord(curses.ascii.ctrl('e')),self.edit)
+
+        self._menu.setPathSave(self._pres.getPath())
         
         
     def closeScreen(self):
@@ -116,9 +118,15 @@ class Screen:
                 if c==curses.KEY_UP:
                     self.setCursorPosition(self._xpos,self._ypos-1)
                     return
-                self.setCursorPosition(self._xpos+1,self._ypos)
-                #catch the character to the presentation
-                self._pres.editCharacter(c,self._xpos,self._ypos)
+                
+                
+                if self._menu.isSaveMode():
+                    #catch the character to the save path
+                    self._menu.saveChar(c)
+                else:
+                    #catch the character to the presentation
+                    self.setCursorPosition(self._xpos+1,self._ypos)
+                    self._pres.editCharacter(c,self._xpos,self._ypos)
     
     #sets the cursor in the position you pass
     def setCursorPosition(self,x,y):
@@ -148,6 +156,10 @@ class Screen:
     def clearScreen(self):
         #erase the screen
         self._screen.clear()
+    
+
+    def clearFromCursor(self):
+        self._screen.clrtobot()
 
     def getHeigh(self):
         return self._height
@@ -179,3 +191,6 @@ class Screen:
 
     def getMenu(self):
         return self._menu
+
+    def savePres(self,path):
+        self._pres.save(path)

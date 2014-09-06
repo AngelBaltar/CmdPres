@@ -34,6 +34,7 @@ class Presentation:
         self._sl=0
         self._quit=False
         self._edit=False
+        self._path=""
     
     #loads the presentation in the passed path
     def load(self,path):
@@ -62,6 +63,7 @@ class Presentation:
             self.append(slide)
         Screen.Instance().getMenu().setSlides(len(self._slides))
         Screen.Instance().getMenu().setCountSlide(self._sl+1)
+        self._path=path
         return True
                 
     def prevSlide(self):
@@ -108,3 +110,6 @@ class Presentation:
         
     def append(self,slide):
         self._slides.append(slide)
+
+    def getPath(self):
+        return self._path

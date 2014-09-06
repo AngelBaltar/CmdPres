@@ -27,6 +27,9 @@ class Menu:
 		self._countSlide=1
 		self._nSlides=0
 		self._heigh=2
+		self._saveMode=False
+		self._pathSave=""
+		self._saveChr=False
 
 	def addMenuItem(self,title,but,fun):
 		item={
@@ -45,6 +48,16 @@ class Menu:
 		if to_drop!=None:
 			self._items.remove(to_drop)
 
+	def save(self):
+		from PresUtils.Screen import *
+		self._saveMode=not self._saveMode
+		if not self._saveMode:
+			#save the thing into the path
+			Screen.Instance().savePres(self._pathSave)
+		else:
+			self._saveChr=False
+		
+
 	def setSlides(self,n):
 		self._nSlides=n
 
@@ -61,6 +74,8 @@ class Menu:
 		 backup_x,backup_y=Screen.Instance().getCursorPosition()
 		 x=0
 		 y=Screen.Instance().getHeigh()-self.getHeigh()
+		 Screen.Instance().setCursorPosition(x,y)
+		 Screen.Instance().clearFromCursor()
 		 first=True
 		 atrs=Screen.Instance().getCustomColorAtr(curses.COLOR_WHITE,curses.COLOR_RED)|curses.A_BOLD
 		 for item in self._items:
@@ -73,10 +88,18 @@ class Menu:
 		 	Screen.Instance().screenPrint(item["name"],atrs)
 		 	x+=len(item["name"])
 		 	first=False
+		 if self._saveMode:
+		 	x=0
+		 	y+=1
+		 	save_str="Enter the path to save:\""+self._pathSave+"\" ^w to save"
+		 	Screen.Instance().setCursorPosition(x,y)
+		 	Screen.Instance().screenPrint(save_str,atrs)
+		 	y-=1
 		 slide_str="Slide:"+str(self._countSlide)+"/"+str(self._nSlides)
 		 x=Screen.Instance().getWidth()-len(slide_str)
 		 Screen.Instance().setCursorPosition(x,y)
 		 Screen.Instance().screenPrint(slide_str,atrs)
+
 		 Screen.Instance().setCursorPosition(backup_x,backup_y)
 		 #make screen consider the menu again
 		 self._heigh=2
@@ -86,3 +109,16 @@ class Menu:
 			if c==item["button"]:
 				item["function"]()
 				break;
+
+	def setPathSave(self,path):
+		self._pathSave=path
+
+	def isSaveMode(self):
+		return self._saveMode
+
+	def saveChar(self,c):
+		if not self._saveChr:
+			self._pathSave=chr(c)
+			self._saveChr=True
+		else:
+			self._pathSave=self._pathSave+chr(c)
