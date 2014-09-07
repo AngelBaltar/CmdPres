@@ -25,7 +25,6 @@ import locale
 import curses.ascii
 
 from PresUtils.Utils import *
-from PresUtils.Menu import *
 
 @Singleton
 class Screen:
@@ -125,7 +124,10 @@ class Screen:
                     self._menu.saveChar(c)
                 else:
                     #catch the character to the presentation
-                    self.setCursorPosition(self._xpos+1,self._ypos)
+                    if c==curses.KEY_BACKSPACE:
+                        self.setCursorPosition(self._xpos-1,self._ypos)
+                    else:
+                        self.setCursorPosition(self._xpos+1,self._ypos)
                     self._pres.editCharacter(c,self._xpos,self._ypos)
     
     #sets the cursor in the position you pass
@@ -194,3 +196,5 @@ class Screen:
 
     def savePres(self,path):
         self._pres.save(path)
+
+from PresUtils.Menu import *

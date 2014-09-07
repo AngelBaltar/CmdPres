@@ -19,6 +19,7 @@
 __author__="angel"
 
 import curses
+from PresUtils.Screen import *
 
 class Menu:
 	
@@ -49,7 +50,6 @@ class Menu:
 			self._items.remove(to_drop)
 
 	def save(self):
-		from PresUtils.Screen import *
 		self._saveMode=not self._saveMode
 		if not self._saveMode:
 			#save the thing into the path
@@ -68,7 +68,6 @@ class Menu:
 		return self._heigh
 
 	def show(self):
-		 from PresUtils.Screen import *
 		 #make screen not consider the menu
 		 self._heigh=0
 		 backup_x,backup_y=Screen.Instance().getCursorPosition()

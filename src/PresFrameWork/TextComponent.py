@@ -90,16 +90,18 @@ class TextComponent(SlideComponent):
 
     def getEnd(self):
         startx,starty=self.getPosition()
-        return startx+len(self._text),starty+1
+        return startx+len(self._text),starty
 
     def editCharacter(self,ch,posx,posy):
         startx,starty=self.getPosition()
         xoffset=posx-startx-1
         list_str=list(self._text)
-        if xoffset==len(list_str):
-            list_str.append(chr(ch))
+        if xoffset<0:
+            xoffset=0
+        if ch==curses.KEY_BACKSPACE:
+            list_str.pop(xoffset+1)
         else:
-            list_str[xoffset]=chr(ch)
+            list_str.insert(xoffset,chr(ch))
         self._text="".join(list_str)
 
     def save(self,root):
