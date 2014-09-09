@@ -99,7 +99,8 @@ class TextComponent(SlideComponent):
         if xoffset<0:
             xoffset=0
         if ch==curses.KEY_BACKSPACE:
-            list_str.pop(xoffset+1)
+            if xoffset!=0:
+                list_str.pop(xoffset+1)
         else:
             list_str.insert(xoffset,chr(ch))
         self._text="".join(list_str)

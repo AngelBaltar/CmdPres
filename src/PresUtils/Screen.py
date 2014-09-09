@@ -82,7 +82,7 @@ class Screen:
         self._menu.addMenuItem("quit(^x)",ord(curses.ascii.ctrl('x')),self._pres.quit)
 
         ## DISABLE EDIT MODE, ITS UNDER CONSTRUCTION NOT FINISHED YET
-        #self._menu.addMenuItem("editMode(^e)",ord(curses.ascii.ctrl('e')),self.edit)
+        self._menu.addMenuItem("editMode(^e)",ord(curses.ascii.ctrl('e')),self.edit)
 
         self._menu.setPathSave(self._pres.getPath())
         
