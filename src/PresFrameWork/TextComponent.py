@@ -96,12 +96,13 @@ class TextComponent(SlideComponent):
         startx,starty=self.getPosition()
         xoffset=posx-startx-1
         list_str=list(self._text)
-        if xoffset<0:
-            xoffset=0
         if ch==curses.KEY_BACKSPACE:
-            if xoffset!=0:
-                list_str.pop(xoffset+1)
+            xoffset+=1
+            if xoffset>=0:
+                list_str.pop(xoffset)
         else:
+            if xoffset<0:
+                xoffset=0
             list_str.insert(xoffset,chr(ch))
         self._text="".join(list_str)
 
