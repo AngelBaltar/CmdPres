@@ -19,6 +19,7 @@
 import curses
 
 from PresUtils.Screen import *
+from PresFrameWork.TextComponent import *
 from lxml import etree
 
 class Slide:
@@ -72,7 +73,12 @@ class Slide:
             if comp!=None:
                 comp.editCharacter(ch,posx,posy)
             else:
-                raise Exception("component to edit not found")
+                txt_str=""+chr(ch)
+                #posx-1 because thex position was already incremented
+                #by the screen editor so place the text in the right position
+                new_txt=TextComponent(posx-1,posy,txt_str);
+                self.append(new_txt)
+                #raise Exception("component to edit not found")
     
     #updates the slide reading from devices
     def update(self):

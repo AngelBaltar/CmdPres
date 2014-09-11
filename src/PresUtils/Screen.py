@@ -101,8 +101,9 @@ class Screen:
         self._height=self._height-1-self._menu.getHeigh()
         self._width=self._width-1
 
-        if curses.ascii.isctrl(c):
-            self._menu.update(c)
+        if curses.ascii.isctrl(c) or ((not self._editMode) and curses.ascii.ismeta(c)):
+                                    #arrows to move the slides
+                self._menu.update(c)
         else:
             if self._editMode:
                 if c==curses.KEY_LEFT:
@@ -116,8 +117,7 @@ class Screen:
                     return
                 if c==curses.KEY_UP:
                     self.setCursorPosition(self._xpos,self._ypos-1)
-                    return
-                
+                    return       
                 
                 if self._menu.isSaveMode():
                     #catch the character to the save path
@@ -128,7 +128,7 @@ class Screen:
                         self.setCursorPosition(self._xpos-1,self._ypos)
                     else:
                         self.setCursorPosition(self._xpos+1,self._ypos)
-                    self._pres.editCharacter(c,self._xpos,self._ypos)
+                self._pres.editCharacter(c,self._xpos,self._ypos)
     
     #sets the cursor in the position you pass
     def setCursorPosition(self,x,y):
