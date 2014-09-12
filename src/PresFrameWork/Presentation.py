@@ -36,6 +36,12 @@ class Presentation:
         self._edit=False
         self._path=""
     
+    def loadEmpty(self):
+        slide=Slide();
+        self.append(slide)
+        self._path=""
+        return True
+
     #loads the presentation in the passed path
     def load(self,path):
         schema_path=os.path.dirname(os.path.abspath(__file__))
@@ -61,8 +67,6 @@ class Presentation:
                 if not (component is None):
                     slide.append(component);
             self.append(slide)
-        Screen.Instance().getMenu().setSlides(len(self._slides))
-        Screen.Instance().getMenu().setCountSlide(self._sl+1)
         self._path=path
         return True
                 
@@ -110,6 +114,12 @@ class Presentation:
         
     def append(self,slide):
         self._slides.append(slide)
+        Screen.Instance().getMenu().setSlides(len(self._slides))
+        Screen.Instance().getMenu().setCountSlide(self._sl+1)
+
+    def createSlide(self):
+        slide=Slide();
+        self.append(slide)
 
     def getPath(self):
         return self._path

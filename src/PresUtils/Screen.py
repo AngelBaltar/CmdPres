@@ -48,6 +48,7 @@ class Screen:
         self._editMode=False
         self._pres.setEdit(self._editMode)
         self._menu.dropMenuItem("presMode(^e)")
+        self._menu.dropMenuItem("new slide(^n)")
         self._menu.dropMenuItem("save(^w)")
 
         self._menu.addMenuItem("editMode(^e)",ord(curses.ascii.ctrl('e')),self.edit)
@@ -64,6 +65,7 @@ class Screen:
         self._menu.dropMenuItem("next(->)")
 
         self._menu.addMenuItem("presMode(^e)",ord(curses.ascii.ctrl('e')),self.quitEdit)
+        self._menu.addMenuItem("new slide(^n)",ord(curses.ascii.ctrl('n')),self.createSlide)
         self._menu.addMenuItem("save(^w)",ord(curses.ascii.ctrl('w')),self._menu.save)
         curses.curs_set(2)
         self.setCursorPosition(0,0)
@@ -91,15 +93,16 @@ class Screen:
         curses.endwin()
         
     def updateScreen(self):
-        self._screen.refresh()
-        self._screen.cursyncup()
-        self._menu.show()
-        c=self.readKey()
         
         #be sure update the screen dimensions
         self._height,self._width = self._screen.getmaxyx();
         self._height=self._height-1-self._menu.getHeigh()
         self._width=self._width-1
+
+        self._screen.refresh()
+        self._screen.cursyncup()
+        self._menu.show()
+        c=self.readKey()
 
         if curses.ascii.isctrl(c) or ((not self._editMode) and curses.ascii.ismeta(c)):
                                     #arrows to move the slides
@@ -128,7 +131,7 @@ class Screen:
                         self.setCursorPosition(self._xpos-1,self._ypos)
                     else:
                         self.setCursorPosition(self._xpos+1,self._ypos)
-                self._pres.editCharacter(c,self._xpos,self._ypos)
+                    self._pres.editCharacter(c,self._xpos,self._ypos)
     
     #sets the cursor in the position you pass
     def setCursorPosition(self,x,y):
@@ -196,5 +199,7 @@ class Screen:
 
     def savePres(self,path):
         self._pres.save(path)
+    def createSlide(self):
+        self._pres.createSlide()
 
 from PresUtils.Menu import *

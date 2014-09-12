@@ -28,15 +28,18 @@ __author__="angel"
 __date__ ="$22-ago-2014 12:39:52$"
 
 
-
-def doPresentation(pres_path):
+#does the main thing, view and edit presentations
+def doPresentation(pres_path=None):
     try:
         pres=Presentation();
-        if not pres.load(pres_path):
-            raise Exception("Cant load the presentation ")
+        if pres_path==None:
+                if not  pres.loadEmpty():
+                    raise Exception("Cant load empty presentation ") 
         else:
-            Screen.Instance().openScreen(pres);
-            pres.open();
+            if not pres.load(pres_path):
+                raise Exception("Cant load the presentation ")
+        Screen.Instance().openScreen(pres);
+        pres.open();
         Screen.Instance().closeScreen()
     except Exception as ex:
         Screen.Instance().closeScreen()
@@ -45,16 +48,21 @@ def doPresentation(pres_path):
     finally:
         pass
 
+#prints the program command line help
 def printHelp():
     print "CmdPres ",Utils.VersionNumber," Command line Presentations"
-    print "Usage: cmdpres.py <path_to_presentation>"
+    print "Usage: cmdpres.py [path_to_presentation]"
 
+#main for the program
 if __name__ == "__main__":
-    if len(sys.argv)!=2:
+    if len(sys.argv)>2:
         print "wrong parameters"
     else:
-        pres_path=sys.argv[1]
-        if(pres_path=="--help" or pres_path=="-h"):
-            printHelp()
+        if len(sys.argv)<2:
+            doPresentation()
         else:
-            doPresentation(pres_path)
+            pres_path=sys.argv[1]
+            if(pres_path=="--help" or pres_path=="-h"):
+                printHelp()
+            else:
+                doPresentation(pres_path)
