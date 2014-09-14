@@ -104,6 +104,11 @@ class Presentation:
             return
         self._slides[self._sl].editCharacter(ch,posx,posy)
 
+    def editAttribute(self,posx,posy):
+        if not self._edit:
+            return
+        self._slides[self._sl].editAttribute(posx,posy)
+
 
     def open(self):
         sl=0;

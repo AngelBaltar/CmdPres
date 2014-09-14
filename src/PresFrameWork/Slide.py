@@ -79,6 +79,11 @@ class Slide:
                 new_txt=TextComponent(posx-1,posy,txt_str);
                 self.append(new_txt)
                 #raise Exception("component to edit not found")
+
+    def editAttribute(self,posx,posy):
+        comp=self._findComponent(posx,posy)
+        if comp!=None:
+            comp.editAttribute()
     
     #updates the slide reading from devices
     def update(self):

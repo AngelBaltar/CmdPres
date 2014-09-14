@@ -21,6 +21,7 @@ import curses
 
 from PresFrameWork.SlideComponent import *;
 from PresUtils.Screen import *;
+from PresUtils.Utils import *;
 from lxml import etree
 
 class TextComponent(SlideComponent):
@@ -68,6 +69,7 @@ class TextComponent(SlideComponent):
     def _attributesMap(self,c):
         """ maps string attributes to curses attributes"""
         atr_map={
+            "none":curses.A_NORMAL,
             "bold":curses.A_BOLD,
             "underline":curses.A_UNDERLINE
             }
@@ -87,6 +89,14 @@ class TextComponent(SlideComponent):
             else:
                 atrs=Screen.Instance().getCustomColorAtr(self._color1,self._color2)
         Screen.Instance().screenPrint(self._text,atrs)
+
+
+    @static_var("index", 0)
+    def editAttribute(self):
+        atr_list=["none","bold","underline"]
+        self.editAttribute.__func__.index+=1
+        self.editAttribute.__func__.index%=len(atr_list)
+        self._atrs=self._attributesMap(atr_list[self.editAttribute.__func__.index])
 
     def getEnd(self):
         startx,starty=self.getPosition()

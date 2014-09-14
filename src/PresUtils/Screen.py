@@ -49,6 +49,7 @@ class Screen:
         self._pres.setEdit(self._editMode)
         self._menu.dropMenuItem("presMode(^e)")
         self._menu.dropMenuItem("new slide(^n)")
+        self._menu.dropMenuItem("Modify Atrs(^d)")
         self._menu.dropMenuItem("save(^w)")
 
         self._menu.addMenuItem("editMode(^e)",ord(curses.ascii.ctrl('e')),self.edit)
@@ -66,6 +67,7 @@ class Screen:
 
         self._menu.addMenuItem("presMode(^e)",ord(curses.ascii.ctrl('e')),self.quitEdit)
         self._menu.addMenuItem("new slide(^n)",ord(curses.ascii.ctrl('n')),self.createSlide)
+        self._menu.addMenuItem("Modify Atrs(^d)",ord(curses.ascii.ctrl('d')),self.editAttribute)
         self._menu.addMenuItem("save(^w)",ord(curses.ascii.ctrl('w')),self._menu.save)
         curses.curs_set(2)
         self.setCursorPosition(0,0)
@@ -199,7 +201,12 @@ class Screen:
 
     def savePres(self,path):
         self._pres.save(path)
+
     def createSlide(self):
         self._pres.createSlide()
+
+    def editAttribute(self):
+        x,y=self.getCursorPosition()
+        self._pres.editAttribute(x,y)
 
 from PresUtils.Menu import *
