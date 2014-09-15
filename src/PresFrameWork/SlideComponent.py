@@ -52,3 +52,9 @@ class SlideComponent:
 
     def editCharacter(self,ch,posx,posy):
         pass
+
+    def editAttribute(self):
+        pass
+
+    def editColor(self,bg):
+        pass

@@ -51,6 +51,7 @@ class TextComponent(SlideComponent):
         """ maps string colors to attribute colors"""
         
         color_map={
+            "none":curses.A_NORMAL,
             "black":curses.COLOR_BLACK,
             "red":curses.COLOR_RED,
             "white":curses.COLOR_WHITE,
@@ -97,6 +98,25 @@ class TextComponent(SlideComponent):
         self.editAttribute.__func__.index+=1
         self.editAttribute.__func__.index%=len(atr_list)
         self._atrs=self._attributesMap(atr_list[self.editAttribute.__func__.index])
+
+    @static_var("index", 0)
+    @static_var("index_bg", 0)
+    def editColor(self,bg):
+        color_list=["none","black","red","white","blue","green","yellow"]
+        if bg:
+            self.editColor.__func__.index_bg+=1
+            self.editColor.__func__.index_bg%=len(color_list)
+            self._color2=self._colorsMap(color_list[self.editColor.__func__.index_bg])
+            #defaults to black
+            if self._color1==None:
+                self._color1=curses.COLOR_BLACK
+        else:
+            self.editColor.__func__.index+=1
+            self.editColor.__func__.index%=len(color_list)
+            self._color1=self._colorsMap(color_list[self.editColor.__func__.index])
+            #defaults to black
+            if self._color2==None:
+                self._color2=curses.COLOR_BLACK
 
     def getEnd(self):
         startx,starty=self.getPosition()

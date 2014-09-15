@@ -84,6 +84,11 @@ class Slide:
         comp=self._findComponent(posx,posy)
         if comp!=None:
             comp.editAttribute()
+
+    def editColor(self,posx,posy,bg):
+        comp=self._findComponent(posx,posy)
+        if comp!=None:
+            comp.editColor(bg)
     
     #updates the slide reading from devices
     def update(self):

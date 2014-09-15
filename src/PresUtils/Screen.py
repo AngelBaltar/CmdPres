@@ -49,7 +49,9 @@ class Screen:
         self._pres.setEdit(self._editMode)
         self._menu.dropMenuItem("presMode(^e)")
         self._menu.dropMenuItem("new slide(^n)")
-        self._menu.dropMenuItem("Modify Atrs(^d)")
+        self._menu.dropMenuItem("Attributes(^d)")
+        self._menu.dropMenuItem("Color(^g)")
+        self._menu.dropMenuItem("Bg Color(^b)")
         self._menu.dropMenuItem("save(^w)")
 
         self._menu.addMenuItem("editMode(^e)",ord(curses.ascii.ctrl('e')),self.edit)
@@ -67,7 +69,9 @@ class Screen:
 
         self._menu.addMenuItem("presMode(^e)",ord(curses.ascii.ctrl('e')),self.quitEdit)
         self._menu.addMenuItem("new slide(^n)",ord(curses.ascii.ctrl('n')),self.createSlide)
-        self._menu.addMenuItem("Modify Atrs(^d)",ord(curses.ascii.ctrl('d')),self.editAttribute)
+        self._menu.addMenuItem("Attributes(^d)",ord(curses.ascii.ctrl('d')),self.editAttribute)
+        self._menu.addMenuItem("Color(^g)",ord(curses.ascii.ctrl('f')),self._editColor)
+        self._menu.addMenuItem("Bg Color(^b)",ord(curses.ascii.ctrl('b')),self._editBgColor)
         self._menu.addMenuItem("save(^w)",ord(curses.ascii.ctrl('w')),self._menu.save)
         curses.curs_set(2)
         self.setCursorPosition(0,0)
@@ -208,5 +212,13 @@ class Screen:
     def editAttribute(self):
         x,y=self.getCursorPosition()
         self._pres.editAttribute(x,y)
+
+    def _editColor(self):
+        x,y=self.getCursorPosition()
+        self._pres.editColor(x,y,False)
+
+    def _editBgColor(self):
+        x,y=self.getCursorPosition()
+        self._pres.editColor(x,y,True)
 
 from PresUtils.Menu import *

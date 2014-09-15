@@ -109,6 +109,9 @@ class Presentation:
             return
         self._slides[self._sl].editAttribute(posx,posy)
 
+    def editColor(self,posx,posy,bg):
+        self._slides[self._sl].editColor(posx,posy,bg)        
+
 
     def open(self):
         sl=0;
